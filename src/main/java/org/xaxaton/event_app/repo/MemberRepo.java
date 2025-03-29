@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import org.xaxaton.event_app.models.Member;
 
 @Repository
-public interface MemberRepo extends BaseRepo<Member> {
+public interface MemberRepo extends JpaRepository<Member, Integer> {
     boolean existsByName(String name);
 
 }

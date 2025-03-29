@@ -1,5 +1,6 @@
 package org.xaxaton.event_app.repo;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -8,7 +9,7 @@ import org.xaxaton.event_app.models.Event;
 import java.util.List;
 
 @Repository
-public interface EventRepo extends BaseRepo<Event> {
+public interface EventRepo extends JpaRepository<Event, Integer> {
     boolean existsByName(String name);
 
 

@@ -1,15 +1,15 @@
 package org.xaxaton.event_app.repo;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.xaxaton.event_app.models.Event;
 import org.xaxaton.event_app.models.Task;
 
 import java.util.List;
 
 @Repository
-public interface TaskRepo extends BaseRepo<Task> {
+public interface TaskRepo extends JpaRepository<Task, Integer> {
     @Query("SELECT t FROM Task t " +
             "JOIN t.event e " +
             "LEFT JOIN e.participants p " +
