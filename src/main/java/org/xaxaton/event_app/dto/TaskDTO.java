@@ -1,5 +1,6 @@
 package org.xaxaton.event_app.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -9,6 +10,9 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 public class TaskDTO {
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private int id;
 
     @NotEmpty(message = "Name should not be empty")
     @Size(min = 2, max = 30, message = "Name length should be in [2,30]")
@@ -21,6 +25,15 @@ public class TaskDTO {
     private LocalDateTime deadLine;
 
     private String description;
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public @NotEmpty(message = "Name should not be empty") @Size(min = 2, max = 30, message = "Name length should be in [2,30]") String getName() {
         return name;
@@ -57,7 +70,8 @@ public class TaskDTO {
     @Override
     public String toString() {
         return "TaskDTO{" +
-                "name='" + getName() + '\'' +
+                "id=" + getId() +
+                ", name='" + getName() + '\'' +
                 ", createdAt=" + getCreatedAt() +
                 ", deadLine=" + getDeadLine() +
                 ", description='" + getDescription() + '\'' +

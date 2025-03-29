@@ -3,6 +3,7 @@ package org.xaxaton.event_app.controllers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.xaxaton.event_app.dto.EventDTO;
+import org.xaxaton.event_app.dto.MemberDTO;
 import org.xaxaton.event_app.mappers.EventMapper;
 import org.xaxaton.event_app.models.Event;
 import org.xaxaton.event_app.models.Member;
@@ -10,10 +11,11 @@ import org.xaxaton.event_app.repo.EventRepo;
 import org.xaxaton.event_app.repo.MemberRepo;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("events/{id}/events")
+@RequestMapping("events/{memberId}/events")
 public class EventsController extends BaseController<Event, EventDTO, EventRepo, EventMapper> {
     public EventsController(EventRepo repo, EventMapper mapper, MemberRepo memberRepo) {
         super(repo, mapper);
@@ -22,10 +24,18 @@ public class EventsController extends BaseController<Event, EventDTO, EventRepo,
 
     private final MemberRepo memberRepo;
 
+
+    @GetMapping
+    public List<EventDTO> getAll() {
+        List<Event> events = repo.findAll();
+        List<EventDTO> dtos = mapper.toListOfDTOs(events);
+        return dtos;
+    }
+
     @PostMapping
-    public ResponseEntity<Event> createNew(@PathVariable("id") int id,
-                                           @RequestBody EventDTO eventDTO) {
-        Optional<Member> admin = memberRepo.findById(id);
+    public ResponseEntity<EventDTO> createNew(@PathVariable("adminId") int adminId,
+                                              @RequestBody EventDTO eventDTO) {
+        Optional<Member> admin = memberRepo.findById(adminId);
         if (admin.isEmpty())
             return ResponseEntity.badRequest().build();
         Event event = mapper.toModel(eventDTO);
@@ -34,10 +44,44 @@ public class EventsController extends BaseController<Event, EventDTO, EventRepo,
 
         event.setAdmin(admin.get());
         Event saved = repo.save(event);
-        return ResponseEntity.ok(saved);
+        EventDTO savedDTO = mapper.toDTO(saved);
+        return ResponseEntity.ok(savedDTO);
     }
 
+    @PutMapping("/{eventId}")
+    public ResponseEntity<EventDTO> updateById(
+            @PathVariable("memberId") int memberId,
+            @PathVariable("eventId") int eventId,
+            @RequestBody EventDTO eventDTO) {
 
 
+        Optional<Member> member = memberRepo.findById(memberId);
+        if (member.isEmpty())
+            return ResponseEntity.badRequest().build();
 
+        Optional<Event> event = repo.findById(eventId);
+        if (event.isEmpty())
+            return ResponseEntity.badRequest().build();
+
+        Member admin = event.get().getAdmin();
+
+        if (!member.get().equals(admin))
+            return ResponseEntity.status(403).build();
+
+        Event existingEvent = event.get();
+
+        if (repo.existsByName(eventDTO.getName()))
+            return ResponseEntity.badRequest().build();
+
+        existingEvent.setName(eventDTO.getName());
+        existingEvent.setDateTime(eventDTO.getDateTime());
+        existingEvent.setDescription(eventDTO.getDescription());
+        existingEvent.setLatitude(eventDTO.getLatitude());
+        existingEvent.setLongitude(eventDTO.getLongitude());
+
+        Event updatedEvent = repo.save(existingEvent);
+
+        EventDTO updatedDTO = mapper.toDTO(updatedEvent);
+        return ResponseEntity.ok(updatedDTO);
+    }
 }
