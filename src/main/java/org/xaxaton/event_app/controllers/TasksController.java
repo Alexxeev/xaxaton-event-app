@@ -1,15 +1,19 @@
 package org.xaxaton.event_app.controllers;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.xaxaton.event_app.dto.EventDTO;
 import org.xaxaton.event_app.dto.TaskDTO;
 import org.xaxaton.event_app.mappers.TaskMapper;
+import org.xaxaton.event_app.models.Event;
 import org.xaxaton.event_app.models.Task;
 import org.xaxaton.event_app.repo.EventRepo;
 import org.xaxaton.event_app.repo.MemberRepo;
 import org.xaxaton.event_app.repo.TaskRepo;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/members/{memberId}/events/{eventId}/tasks")
@@ -47,6 +51,21 @@ public class TasksController {
         List<TaskDTO> dtos = taskMapper.toListOfDTOs(tasks);
         return ResponseEntity.ok(dtos);
     }
+
+    @GetMapping("/{taskId}")
+    public ResponseEntity<TaskDTO> getById(
+            @PathVariable("memberId") int memberId,
+            @PathVariable("eventId")  int eventId,
+            @PathVariable("taskId") int taskId) {
+        Optional<Task> task = taskRepo.findByTaskIdAndEventIdAndMemberId(taskId, eventId, memberId);
+        if (task.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        TaskDTO taskDTO = taskMapper.toDTO(task.get());
+        return ResponseEntity.ok(taskDTO);
+    }
+
+
 
     @PutMapping
     public ResponseEntity<TaskDTO> createNew(

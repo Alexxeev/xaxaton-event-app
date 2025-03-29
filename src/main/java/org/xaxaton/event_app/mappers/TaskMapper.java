@@ -7,19 +7,43 @@ import org.xaxaton.event_app.dto.TaskDTO;
 import org.xaxaton.event_app.models.Task;
 import org.xaxaton.event_app.models.Task;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
-public class TaskMapper extends BaseMapper<Task, TaskDTO> {
+public class TaskMapper {
+
+    private final ModelMapper modelMapper;
+
     public TaskMapper(ModelMapper modelMapper) {
-        super(modelMapper);
+        this.modelMapper = modelMapper;
     }
 
-    @Override
     public TaskDTO toDTO(Task task) {
         return modelMapper.map(task, TaskDTO.class);
     }
 
-    @Override
     public Task toModel(TaskDTO taskDTO) {
         return modelMapper.map(taskDTO, Task.class);
+    }
+
+    public List<TaskDTO> toListOfDTOs(List<Task> tasks) {
+        List<TaskDTO> result = new ArrayList<>();
+
+        for (Task task : tasks) {
+            result.add(toDTO(task));
+        }
+
+        return result;
+    }
+
+    public List<Task> toListOfModels(List<TaskDTO> taskDTOs) {
+        List<Task> result = new ArrayList<>();
+
+        for (TaskDTO taskDTO : taskDTOs) {
+            result.add(toModel(taskDTO));
+        }
+
+        return result;
     }
 }

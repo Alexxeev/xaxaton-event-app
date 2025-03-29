@@ -1,5 +1,6 @@
 package org.xaxaton.event_app.controllers;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.xaxaton.event_app.dto.EventDTO;
@@ -33,8 +34,19 @@ public class EventsController {
         return ResponseEntity.ok(dtos);
     }
 
+    @GetMapping("/{eventId}")
+    public ResponseEntity<EventDTO> getById(@PathVariable int memberId,
+                                            @PathVariable int eventId) {
+        Optional<Event> event = eventRepo.findByEventIdAndMemberId(eventId, memberId);
+        if (event.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        EventDTO eventDTO = eventMapper.toDTO(event.get());
+        return ResponseEntity.ok(eventDTO);
+    }
+
     @PostMapping
-    public ResponseEntity<EventDTO> createNew(@PathVariable("adminId") int adminId,
+    public ResponseEntity<EventDTO> createNew(@PathVariable("memberId") int adminId,
                                               @RequestBody EventDTO eventDTO) {
         Optional<Member> admin = memberRepo.findById(adminId);
         if (admin.isEmpty())

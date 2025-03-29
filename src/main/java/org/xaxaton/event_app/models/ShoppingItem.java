@@ -45,7 +45,6 @@ public class ShoppingItem {
     @JoinColumn(name = "task_id", referencedColumnName = "id")
     private Task task;
 
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "shopping_item_member",

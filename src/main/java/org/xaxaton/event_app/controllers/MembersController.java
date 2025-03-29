@@ -3,12 +3,14 @@ package org.xaxaton.event_app.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.xaxaton.event_app.dto.EventDTO;
 import org.xaxaton.event_app.dto.MemberDTO;
 import org.xaxaton.event_app.mappers.MemberMapper;
 import org.xaxaton.event_app.models.Member;
 import org.xaxaton.event_app.repo.MemberRepo;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/members")
@@ -23,10 +25,19 @@ public class MembersController {
     }
 
     @GetMapping
-    public List<MemberDTO> getAll() {
+    public ResponseEntity<List<MemberDTO>> getAll() {
         List<Member> members = memberRepo.findAll();
         List<MemberDTO> dtos = memberMapper.toListOfDTOs(members);
-        return dtos;
+        return ResponseEntity.ok(dtos);
+    }
+
+    @GetMapping("/{memberId}")
+    public ResponseEntity<MemberDTO> getById(@PathVariable("memberId") int memberId) {
+        Optional<Member> optionalMember = memberRepo.findById(memberId);
+        if (optionalMember.isEmpty())
+            return ResponseEntity.notFound().build();
+        MemberDTO memberDTO = memberMapper.toDTO(optionalMember.get());
+        return ResponseEntity.ok(memberDTO);
     }
 
     @PostMapping

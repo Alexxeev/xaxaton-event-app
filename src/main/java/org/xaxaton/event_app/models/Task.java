@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "task")
@@ -38,7 +39,8 @@ public class Task {
     private Event event;
 
     @OneToMany
-
+    @JoinColumn(name = "task_id", referencedColumnName = "id")
+    private List<ShoppingItem> shoppingItems;
 
     public int getId() {
         return id;
@@ -88,6 +90,14 @@ public class Task {
         this.event = event;
     }
 
+    public List<ShoppingItem> getShoppingItems() {
+        return shoppingItems;
+    }
+
+    public void setShoppingItems(List<ShoppingItem> shoppingItems) {
+        this.shoppingItems = shoppingItems;
+    }
+
     @Override
     public String toString() {
         return "Task{" +
@@ -97,6 +107,7 @@ public class Task {
                 ", deadLine=" + getDeadLine() +
                 ", description='" + getDescription() + '\'' +
                 ", event=" + getEvent() +
+                ", shoppingItems=" + getShoppingItems() +
                 '}';
     }
 }

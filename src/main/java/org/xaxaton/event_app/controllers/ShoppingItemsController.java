@@ -1,19 +1,24 @@
 package org.xaxaton.event_app.controllers;
 
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.xaxaton.event_app.dto.ShoppingItemDTO;
+import org.xaxaton.event_app.dto.TaskDTO;
 import org.xaxaton.event_app.mappers.ShoppingItemMapper;
+import org.xaxaton.event_app.models.ShoppingItem;
+import org.xaxaton.event_app.models.Task;
 import org.xaxaton.event_app.repo.EventRepo;
 import org.xaxaton.event_app.repo.MemberRepo;
 import org.xaxaton.event_app.repo.ShoppingItemRepo;
 import org.xaxaton.event_app.repo.TaskRepo;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/members/{memberId}/events/{eventId}/tasks/{tasksId}/shopping-items")
+@RequestMapping("/members/{memberId}/events/{eventId}/tasks/{taskId}/shopping-items")
 public class ShoppingItemsController {
 
     private final ShoppingItemMapper shoppingItemMapper;
@@ -51,6 +56,32 @@ public class ShoppingItemsController {
         //var shoppingItems = repo.findAllByTaskId(taskId);
         var dtos = shoppingItemMapper.toListOfDTOs(shoppingItems);
         return ResponseEntity.ok(dtos);
+    }
+
+    @GetMapping("/{shoppingItemId}")
+    public ResponseEntity<ShoppingItemDTO> getById(
+            @PathVariable("memberId") int memberId,
+            @PathVariable("eventId") int eventId,
+            @PathVariable("taskId") int taskId,
+            @PathVariable("shoppingItemId") int shoppingItemId) {
+
+        Optional<Task> task = taskRepo.findByTaskIdAndEventIdAndMemberId(taskId, eventId, memberId);
+        if (task.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        Optional<ShoppingItem> shoppingItem = task.get().getShoppingItems()
+                .stream()
+                .filter(item -> item.getId() == shoppingItemId)
+                .findFirst();
+
+        if (shoppingItem.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        ShoppingItemDTO shoppingItemDTO = shoppingItemMapper.toDTO(shoppingItem.get());
+        return ResponseEntity.ok(shoppingItemDTO);
+
     }
 
     @PostMapping
