@@ -1,9 +1,10 @@
-package org.xaxaton.event_app.models.member;
+package org.xaxaton.event_app.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
+import java.util.List;
 
 @Entity
 @Table(name = "member")
@@ -19,8 +20,13 @@ public class Member {
     @Size(min = 2, max = 30, message = "Name length should be in [2,30]")
     private String name;
 
-    @NotNull(message = "Name should not be null")
-    private MemberRole memberRole;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "event_member",
+            joinColumns = @JoinColumn(name = "member_id"),
+            inverseJoinColumns = @JoinColumn(name = "event_id")
+    )
+    private List<Event> events;
 
     public int getId() {
         return id;
@@ -37,14 +43,5 @@ public class Member {
     public void setName(@NotEmpty(message = "Name should not be empty") @Size(min = 2, max = 30, message = "Name length should be in [2,30]") String name) {
         this.name = name;
     }
-
-    public @NotNull(message = "Name should not be null") MemberRole getMemberRole() {
-        return memberRole;
-    }
-
-    public void setMemberRole(@NotNull(message = "Name should not be null") MemberRole memberRole) {
-        this.memberRole = memberRole;
-    }
-
 
 }

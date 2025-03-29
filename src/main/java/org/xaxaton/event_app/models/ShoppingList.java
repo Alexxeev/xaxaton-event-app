@@ -1,10 +1,8 @@
-package org.xaxaton.event_app.models.shopping.list;
+package org.xaxaton.event_app.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import org.xaxaton.event_app.models.shopping.item.ShoppingItem;
-import org.xaxaton.event_app.models.task.Task;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

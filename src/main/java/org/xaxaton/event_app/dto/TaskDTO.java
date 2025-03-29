@@ -1,48 +1,26 @@
-package org.xaxaton.event_app.models.task;
+package org.xaxaton.event_app.dto;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import org.xaxaton.event_app.models.event.Event;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "task")
-public class Task {
+public class TaskDTO {
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @Column(name = "name")
     @NotEmpty(message = "Name should not be empty")
     @Size(min = 2, max = 30, message = "Name length should be in [2,30]")
-
     private String name;
-    @Column(name = "created_at")
+
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdAt;
 
-    @Column(name = "deadline")
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime deadLine;
 
-    @Column(name = "description")
     private String description;
-
-    @ManyToOne
-    @JoinColumn(name = "event_id", referencedColumnName = "id")
-    private Event event;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public @NotEmpty(message = "Name should not be empty") @Size(min = 2, max = 30, message = "Name length should be in [2,30]") String getName() {
         return name;
@@ -76,23 +54,13 @@ public class Task {
         this.description = description;
     }
 
-    public Event getEvent() {
-        return event;
-    }
-
-    public void setEvent(Event event) {
-        this.event = event;
-    }
-
     @Override
     public String toString() {
-        return "Task{" +
-                "id=" + getId() +
-                ", name='" + getName() + '\'' +
+        return "TaskDTO{" +
+                "name='" + getName() + '\'' +
                 ", createdAt=" + getCreatedAt() +
                 ", deadLine=" + getDeadLine() +
                 ", description='" + getDescription() + '\'' +
-                ", event=" + getEvent() +
                 '}';
     }
 }

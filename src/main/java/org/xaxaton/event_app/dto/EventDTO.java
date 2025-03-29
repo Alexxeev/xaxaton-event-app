@@ -1,72 +1,33 @@
-package org.xaxaton.event_app.models.event;
+package org.xaxaton.event_app.dto;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.xaxaton.event_app.models.member.Member;
-import org.xaxaton.event_app.models.member.MemberRole;
-import org.xaxaton.event_app.models.task.Task;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-@Entity
-@Table(name = "event")
-public class Event {
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class EventDTO {
 
-    @Column(name = "name")
     @NotEmpty(message = "Name should not be empty")
     @Size(min = 2, max = 30, message = "Name length should be in [2,30]")
     private String name;
 
-
-    @Column(name = "description")
     private String description;
 
-    @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdAt;
 
-    @Column(name = "date_time")
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime dateTime;
 
-    @Column(name="latitude")
     @NotNull(message = "Latitude should not be empty")
     private double latitude;
 
-    @Column(name="longitude")
     @NotNull(message = "Longitude should not be empty")
     private double longitude;
 
-    @OneToOne
-    @JoinColumn(name = "admin_id", referencedColumnName = "id")
-    private Member admin;
-
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Task> tasks = new ArrayList<>();
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "event_member",
-            joinColumns = @JoinColumn(name = "event_id"),
-            inverseJoinColumns = @JoinColumn(name = "member_id")
-    )
-    private List<Member> participants;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    private MemberDTO admin;
 
     public @NotEmpty(message = "Name should not be empty") @Size(min = 2, max = 30, message = "Name length should be in [2,30]") String getName() {
         return name;
@@ -118,43 +79,11 @@ public class Event {
         this.longitude = longitude;
     }
 
-    public Member getAdmin() {
+    public MemberDTO getAdmin() {
         return admin;
     }
 
-    public void setAdmin(Member admin) {
+    public void setAdmin(MemberDTO admin) {
         this.admin = admin;
     }
-
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
-
-    public List<Member> getParticipants() {
-        return participants;
-    }
-
-    public void setParticipants(List<Member> participants) {
-        this.participants = participants;
-    }
-
-    @PrePersist
-    @PreUpdate
-    private void validateEvent() {
-        if (admin != null && admin.getMemberRole() != MemberRole.ADMIN) {
-            throw new IllegalArgumentException("Member must be an ADMIN to be assigned as an event admin.");
-        }
-
-        if (participants != null && participants.stream().anyMatch(member -> member.getMemberRole() == MemberRole.ADMIN)) {
-            throw new IllegalArgumentException("Admins cannot be participants.");
-        }
-    }
-
-
-
-
 }
