@@ -28,6 +28,14 @@ public class Member {
     )
     private List<Event> events;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "shopping_item_member",
+            joinColumns = @JoinColumn(name = "member_id"),
+            inverseJoinColumns = @JoinColumn(name = "shopping_item_id")
+    )
+    private List<ShoppingItem> wishList;
+
     public int getId() {
         return id;
     }
@@ -44,4 +52,29 @@ public class Member {
         this.name = name;
     }
 
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
+    }
+
+    public List<ShoppingItem> getWishList() {
+        return wishList;
+    }
+
+    public void setWishList(List<ShoppingItem> wishList) {
+        this.wishList = wishList;
+    }
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + getId() +
+                ", name='" + getName() + '\'' +
+                ", events=" + getEvents() +
+                ", wishList=" + getWishList() +
+                '}';
+    }
 }

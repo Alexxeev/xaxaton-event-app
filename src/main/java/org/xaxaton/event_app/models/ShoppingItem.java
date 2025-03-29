@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "shopping_item")
@@ -20,6 +22,7 @@ public class ShoppingItem {
     @Size(min = 2, max = 30, message = "Name length should be in [2,30]")
     private String name;
 
+    @CreationTimestamp
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdAt;
@@ -27,22 +30,29 @@ public class ShoppingItem {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "expected_price")
+    @Column(name = "expectedPrice")
     @NotNull(message = "Expected price should not be null")
-    private long expected_price;
+    private Long expectedPrice;
 
-    @Column(name = "real_price")
-    //@NotNull(message = "Real price should not be null")
-    private long real_price;
+    @Column(name = "realPrice")
+    private Long realPrice;
 
     @OneToOne
     @JoinColumn(name = "payer_id", referencedColumnName = "id")
     private Member payer;
 
-
     @ManyToOne
     @JoinColumn(name = "shopping_list_id", referencedColumnName = "id")
     private ShoppingList shoppingList;
+
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "shopping_item_member",
+            joinColumns = @JoinColumn(name = "shopping_item_id"),
+            inverseJoinColumns = @JoinColumn(name = "member_id")
+    )
+    private List<Member> membersWishingThis;
 
     public int getId() {
         return id;
@@ -77,21 +87,21 @@ public class ShoppingItem {
     }
 
     @NotNull(message = "Expected price should not be null")
-    public long getExpected_price() {
-        return expected_price;
+    public Long getExpectedPrice() {
+        return expectedPrice;
     }
 
-    public void setExpected_price(@NotNull(message = "Expected price should not be null") long expected_price) {
-        this.expected_price = expected_price;
+    public void setExpectedPrice(@NotNull(message = "Expected price should not be null") Long expectedPrice) {
+        this.expectedPrice = expectedPrice;
     }
 
-    @NotNull(message = "Real price should not be null")
-    public long getReal_price() {
-        return real_price;
+    //@NotNull(message = "Real price should not be null")
+    public Long getRealPrice() {
+        return realPrice;
     }
 
-    public void setReal_price(@NotNull(message = "Real price should not be null") long real_price) {
-        this.real_price = real_price;
+    public void setRealPrice(@NotNull(message = "Real price should not be null") Long realPrice) {
+        this.realPrice = realPrice;
     }
 
     public Member getPayer() {
@@ -110,6 +120,14 @@ public class ShoppingItem {
         this.shoppingList = shoppingList;
     }
 
+    public List<Member> getMembersWishingThis() {
+        return membersWishingThis;
+    }
+
+    public void setMembersWishingThis(List<Member> membersWishingThis) {
+        this.membersWishingThis = membersWishingThis;
+    }
+
     @Override
     public String toString() {
         return "ShoppingItem{" +
@@ -117,10 +135,11 @@ public class ShoppingItem {
                 ", name='" + getName() + '\'' +
                 ", createdAt=" + getCreatedAt() +
                 ", description='" + getDescription() + '\'' +
-                ", expected_price=" + getExpected_price() +
-                ", real_price=" + getReal_price() +
+                ", expectedPrice=" + getExpectedPrice() +
+                ", realPrice=" + getRealPrice() +
                 ", payer=" + getPayer() +
                 ", shoppingList=" + getShoppingList() +
+                ", membersWishingThis=" + getMembersWishingThis() +
                 '}';
     }
 }
