@@ -8,10 +8,10 @@ import java.util.List;
 
 @Repository
 public interface ShoppingItemRepo extends BaseRepo<ShoppingItem> {
-    @Query("""
+    /*@Query("""
             select si from shopping-item si
             left join task t
             where t.id = :taskId
             """)
-    List<ShoppingItem> findAllByTaskId(int taskId);
+    List<ShoppingItem> findAllByTaskId(int taskId);*/
 }

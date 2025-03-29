@@ -53,7 +53,8 @@ public class ShoppingItemsController extends BaseController<ShoppingItem,
         if (!memberAndEventAndTaskExists(memberId, eventId, taskId))
             return ResponseEntity.notFound().build();
         //if not in event or task return 403
-        var shoppingItems = repo.findAllByTaskId(taskId);
+        var shoppingItems = repo.findAll();
+        //var shoppingItems = repo.findAllByTaskId(taskId);
         var dtos = mapper.toListOfDTOs(shoppingItems);
         return ResponseEntity.ok(dtos);
     }

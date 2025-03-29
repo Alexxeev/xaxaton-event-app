@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.xaxaton</groupId>
-	<artifactId>event-app</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>event-app</name>
+	<artifactId>xaxaton-event-app</artifactId>
+	<version>0.0.1</version>
+	<name>xaxaton-event-app</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
