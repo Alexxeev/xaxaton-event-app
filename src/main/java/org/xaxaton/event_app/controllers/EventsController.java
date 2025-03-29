@@ -3,32 +3,33 @@ package org.xaxaton.event_app.controllers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.xaxaton.event_app.dto.EventDTO;
-import org.xaxaton.event_app.dto.MemberDTO;
 import org.xaxaton.event_app.mappers.EventMapper;
 import org.xaxaton.event_app.models.Event;
 import org.xaxaton.event_app.models.Member;
 import org.xaxaton.event_app.repo.EventRepo;
 import org.xaxaton.event_app.repo.MemberRepo;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+
 @RestController
 @RequestMapping("members/{memberId}/events")
-public class EventsController extends BaseController<Event, EventDTO, EventRepo, EventMapper> {
-    public EventsController(EventRepo repo, EventMapper mapper, MemberRepo memberRepo) {
-        super(repo, mapper);
-        this.memberRepo = memberRepo;
-    }
-
+public class EventsController {
     private final MemberRepo memberRepo;
+    private final EventRepo eventRepo;
+    private final EventMapper eventMapper;
 
+    public EventsController(MemberRepo memberRepo, EventRepo eventRepo, EventMapper eventMapper) {
+        this.memberRepo = memberRepo;
+        this.eventRepo = eventRepo;
+        this.eventMapper = eventMapper;
+    }
 
     @GetMapping
     public ResponseEntity<List<EventDTO>> getAll(@PathVariable("memberId") int memberId) {
-        List<Event> events = repo.findEventsByMemberId(memberId);
-        List<EventDTO> dtos = mapper.toListOfDTOs(events);
+        List<Event> events = eventRepo.findEventsByMemberId(memberId);
+        List<EventDTO> dtos = eventMapper.toListOfDTOs(events);
         return ResponseEntity.ok(dtos);
     }
 
@@ -38,13 +39,13 @@ public class EventsController extends BaseController<Event, EventDTO, EventRepo,
         Optional<Member> admin = memberRepo.findById(adminId);
         if (admin.isEmpty())
             return ResponseEntity.badRequest().build();
-        Event event = mapper.toModel(eventDTO);
-        if (repo.existsByName(event.getName()))
+        Event event = eventMapper.toModel(eventDTO);
+        if (eventRepo.existsByName(event.getName()))
             return ResponseEntity.badRequest().build();
 
         event.setAdmin(admin.get());
-        Event saved = repo.save(event);
-        EventDTO savedDTO = mapper.toDTO(saved);
+        Event saved = eventRepo.save(event);
+        EventDTO savedDTO = eventMapper.toDTO(saved);
         return ResponseEntity.ok(savedDTO);
     }
 
@@ -59,7 +60,7 @@ public class EventsController extends BaseController<Event, EventDTO, EventRepo,
         if (member.isEmpty())
             return ResponseEntity.badRequest().build();
 
-        Optional<Event> event = repo.findById(eventId);
+        Optional<Event> event = eventRepo.findById(eventId);
         if (event.isEmpty())
             return ResponseEntity.badRequest().build();
 
@@ -70,7 +71,7 @@ public class EventsController extends BaseController<Event, EventDTO, EventRepo,
 
         Event existingEvent = event.get();
 
-        if (repo.existsByName(eventDTO.getName()))
+        if (eventRepo.existsByName(eventDTO.getName()))
             return ResponseEntity.badRequest().build();
 
         existingEvent.setName(eventDTO.getName());
@@ -79,9 +80,9 @@ public class EventsController extends BaseController<Event, EventDTO, EventRepo,
         existingEvent.setLatitude(eventDTO.getLatitude());
         existingEvent.setLongitude(eventDTO.getLongitude());
 
-        Event updatedEvent = repo.save(existingEvent);
+        Event updatedEvent = eventRepo.save(existingEvent);
 
-        EventDTO updatedDTO = mapper.toDTO(updatedEvent);
+        EventDTO updatedDTO = eventMapper.toDTO(updatedEvent);
         return ResponseEntity.ok(updatedDTO);
     }
 }
