@@ -10,33 +10,29 @@ import java.util.List;
 
 public abstract class BaseMapper<M, D> {
 
-    private final ModelMapper modelMapper;
+    protected final ModelMapper modelMapper;
 
     @Autowired
     public BaseMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
 
-    public D toDTO(M model, Class<D> dtoClass) {
-        return modelMapper.map(model, dtoClass);
-    }
+    public abstract D toDTO(M model);
 
-    public M toModel(D dto, Class<M> modelClass) {
-        return modelMapper.map(dto, modelClass);
-    }
+    public abstract M toModel(D dto);
 
-    public List<D> toListOfDTOs(List<M> entities, Class<D> dtoClass) {
+    public List<D> toListOfDTOs(List<M> entities) {
         List<D> result = new ArrayList<>();
         for (M model : entities) {
-            result.add(toDTO(model, dtoClass));
+            result.add(toDTO(model));
         }
         return result;
     }
 
-    public List<M> toListOfModels(List<D> dtos, Class<M> modelClass) {
+    public List<M> toListOfModels(List<D> dtos) {
         List<M> result = new ArrayList<>();
         for (D dto : dtos) {
-            result.add(toModel(dto, modelClass));
+            result.add(toModel(dto));
         }
         return result;
     }

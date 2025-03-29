@@ -32,7 +32,7 @@ public class ShoppingItem {
     private long expected_price;
 
     @Column(name = "real_price")
-    @NotNull(message = "Real price should not be null")
+    //@NotNull(message = "Real price should not be null")
     private long real_price;
 
     @OneToOne

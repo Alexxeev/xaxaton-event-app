@@ -86,4 +86,17 @@ public class EventDTO {
     public void setAdmin(MemberDTO admin) {
         this.admin = admin;
     }
+
+    @Override
+    public String toString() {
+        return "EventDTO{" +
+                "name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", createdAt=" + getCreatedAt() +
+                ", dateTime=" + getDateTime() +
+                ", latitude=" + getLatitude() +
+                ", longitude=" + getLongitude() +
+                ", admin=" + getAdmin() +
+                '}';
+    }
 }

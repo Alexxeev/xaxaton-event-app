@@ -20,7 +20,7 @@ public abstract class BaseController<M, D, R extends BaseRepo<M>, P extends Base
     }
 
     @GetMapping
-    public List<D> getAll(Class<D> dtoClass) {
-        return mapper.toListOfDTOs(repo.findAll(), dtoClass);
+    public List<D> getAll() {
+        return mapper.toListOfDTOs(repo.findAll());
     }
 }
