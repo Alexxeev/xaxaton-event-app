@@ -46,7 +46,7 @@ public class TasksController extends BaseController<Task, TaskDTO, TaskRepo, Tas
         return ResponseEntity.ok(dtos);
     }
 
-    @PostMapping
+    @PutMapping
     public ResponseEntity<TaskDTO> createNew(
             @PathVariable("memberId") int memberId,
             @PathVariable("eventId")  int eventId,
@@ -67,11 +67,13 @@ public class TasksController extends BaseController<Task, TaskDTO, TaskRepo, Tas
             @RequestBody TaskDTO taskDTO) {
         if (!memberAndEventExists(memberId, eventId))
             return ResponseEntity.badRequest().build();
-        if (!repo.existsById(taskId))
+        var taskOrNull = repo.findById(taskId);
+        if (taskOrNull.isEmpty())
             return ResponseEntity.badRequest().build();
-        var task = mapper.toModel(taskDTO);
-        task.setId(taskId);
-        task = repo.save(task);
+        var task = taskOrNull.get();
+        task.setName(taskDTO.getName());
+        task.setDeadLine(taskDTO.getDeadLine());
+        task.setDescription(taskDTO.getDescription());
         var savedDTO = mapper.toDTO(task);
         return ResponseEntity.ok(savedDTO);
     }
