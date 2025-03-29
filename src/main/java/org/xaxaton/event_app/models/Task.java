@@ -37,6 +37,9 @@ public class Task {
     @JoinColumn(name = "event_id", referencedColumnName = "id")
     private Event event;
 
+    @OneToMany
+
+
     public int getId() {
         return id;
     }

@@ -42,8 +42,8 @@ public class ShoppingItem {
     private Member payer;
 
     @ManyToOne
-    @JoinColumn(name = "shopping_list_id", referencedColumnName = "id")
-    private ShoppingList shoppingList;
+    @JoinColumn(name = "task_id", referencedColumnName = "id")
+    private Task task;
 
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -112,12 +112,12 @@ public class ShoppingItem {
         this.payer = payer;
     }
 
-    public ShoppingList getShoppingList() {
-        return shoppingList;
+    public Task getTask() {
+        return task;
     }
 
-    public void setShoppingList(ShoppingList shoppingList) {
-        this.shoppingList = shoppingList;
+    public void setTask(Task task) {
+        this.task = task;
     }
 
     public List<Member> getMembersWishingThis() {
@@ -128,18 +128,5 @@ public class ShoppingItem {
         this.membersWishingThis = membersWishingThis;
     }
 
-    @Override
-    public String toString() {
-        return "ShoppingItem{" +
-                "id=" + getId() +
-                ", name='" + getName() + '\'' +
-                ", createdAt=" + getCreatedAt() +
-                ", description='" + getDescription() + '\'' +
-                ", expectedPrice=" + getExpectedPrice() +
-                ", realPrice=" + getRealPrice() +
-                ", payer=" + getPayer() +
-                ", shoppingList=" + getShoppingList() +
-                ", membersWishingThis=" + getMembersWishingThis() +
-                '}';
-    }
+
 }

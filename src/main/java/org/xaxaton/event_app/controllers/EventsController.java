@@ -25,8 +25,6 @@ public class EventsController extends BaseController<Event, EventDTO, EventRepo,
     @PostMapping
     public ResponseEntity<Event> createNew(@PathVariable("id") int id,
                                            @RequestBody EventDTO eventDTO) {
-
-
         Optional<Member> admin = memberRepo.findById(id);
         if (admin.isEmpty())
             return ResponseEntity.badRequest().build();
