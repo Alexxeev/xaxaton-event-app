@@ -6,4 +6,6 @@ import org.xaxaton.event_app.models.Member;
 
 @Repository
 public interface MemberRepo extends BaseRepo<Member> {
+    boolean existsByName(String name);
+
 }
