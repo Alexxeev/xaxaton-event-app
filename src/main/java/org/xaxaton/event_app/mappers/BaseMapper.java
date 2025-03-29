@@ -8,8 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
-public class BaseMapper<M, D> {
+public abstract class BaseMapper<M, D> {
 
     private final ModelMapper modelMapper;
 
