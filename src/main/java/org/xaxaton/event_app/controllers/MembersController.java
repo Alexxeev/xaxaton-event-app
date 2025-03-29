@@ -47,10 +47,10 @@ public class MembersController extends BaseController<Member, MemberDTO, MemberR
             @RequestBody MemberDTO memberDTO) {
         if (repo.existsByName(memberDTO.getName()))
             return ResponseEntity.badRequest().build();
-        Member existingMember = repo.findById(id).get();
-        existingMember.setName(memberDTO.getName());
-        Member updatedMember = repo.save(existingMember);
-        MemberDTO updatedDTO = mapper.toDTO(updatedMember);
+        var member = mapper.toModel(memberDTO);
+        member.setId(id);
+        member = repo.save(member);
+        MemberDTO updatedDTO = mapper.toDTO(member);
         return ResponseEntity.ok(updatedDTO);
     }
 }
