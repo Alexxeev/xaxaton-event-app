@@ -39,10 +39,15 @@ public class TasksController extends BaseController<Task, TaskDTO, TaskRepo, Tas
     public ResponseEntity<List<TaskDTO>> getAll(
             @PathVariable("memberId") int memberId,
             @PathVariable("eventId")  int eventId) {
-        if (memberAndEventExists(memberId, eventId))
+        if (!memberAndEventExists(memberId, eventId))
             return ResponseEntity.badRequest().build();
-        var tasks = repo.findAll();
-        var dtos = mapper.toListOfDTOs(tasks);
+
+        List<Task> tasks = repo.findTasksByMemberIdAndEventId(memberId, eventId);
+
+        if (tasks.isEmpty())
+            return ResponseEntity.status(403).build();
+
+        List<TaskDTO> dtos = mapper.toListOfDTOs(tasks);
         return ResponseEntity.ok(dtos);
     }
 

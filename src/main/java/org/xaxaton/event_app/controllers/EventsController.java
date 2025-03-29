@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("events/{memberId}/events")
+@RequestMapping("members/{memberId}/events")
 public class EventsController extends BaseController<Event, EventDTO, EventRepo, EventMapper> {
     public EventsController(EventRepo repo, EventMapper mapper, MemberRepo memberRepo) {
         super(repo, mapper);
@@ -26,10 +26,10 @@ public class EventsController extends BaseController<Event, EventDTO, EventRepo,
 
 
     @GetMapping
-    public List<EventDTO> getAll() {
-        List<Event> events = repo.findAll();
+    public ResponseEntity<List<EventDTO>> getAll(@PathVariable("memberId") int memberId) {
+        List<Event> events = repo.findEventsByMemberId(memberId);
         List<EventDTO> dtos = mapper.toListOfDTOs(events);
-        return dtos;
+        return ResponseEntity.ok(dtos);
     }
 
     @PostMapping
