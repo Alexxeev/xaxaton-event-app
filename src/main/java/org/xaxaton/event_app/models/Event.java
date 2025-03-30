@@ -153,9 +153,9 @@ public class Event {
                 ", dateTime=" + getDateTime() +
                 ", latitude=" + getLatitude() +
                 ", longitude=" + getLongitude() +
-                ", admin=" + getAdmin() +
-                ", tasks=" + getTasks() +
-                ", participants=" + getParticipants() +
+                //", admin=" + getAdmin() +
+                //", tasks=" + getTasks() +
+                //", participants=" + getParticipants() +
                 '}';
     }
 }

@@ -38,7 +38,10 @@ public interface ShoppingItemRepo extends JpaRepository<ShoppingItem, Integer> {
             @Param("eventId") int eventId,
             @Param("memberId") int memberId);
 
+    /*
     List<ShoppingItem> findAllByMemberIdAnnEventId(
             @Param("memberId") int memberId,
-            @Param("eventId") int eventId);
+            @Param("eventId") int eventId);*/
+
+    List<ShoppingItem> findByTaskId(int taskId);
 }

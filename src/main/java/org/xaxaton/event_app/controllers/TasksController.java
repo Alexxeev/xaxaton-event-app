@@ -67,7 +67,7 @@ public class TasksController {
 
 
 
-    @PutMapping
+    @PostMapping
     public ResponseEntity<TaskDTO> createNew(
             @PathVariable("memberId") int memberId,
             @PathVariable("eventId")  int eventId,
@@ -75,16 +75,29 @@ public class TasksController {
         if (!memberAndEventExists(memberId, eventId))
             return ResponseEntity.badRequest().build();
         var task = taskMapper.toModel(taskDTO);
+
+
+
+        Optional<Event> event = eventRepo.findById(eventId);
+
+        //System.out.println("Found event: " + event);
+        if (event.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        task.setEvent(event.get());
+        //System.out.println("to save task: " + task);
+
         task = taskRepo.save(task);
         var savedDTO = taskMapper.toDTO(task);
         return ResponseEntity.ok(savedDTO);
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{taskId}")
     public ResponseEntity<TaskDTO> update(
             @PathVariable("memberId") int memberId,
             @PathVariable("eventId")  int eventId,
-            @PathVariable("id") int taskId,
+            @PathVariable("taskId") int taskId,
             @RequestBody TaskDTO taskDTO) {
         if (!memberAndEventExists(memberId, eventId))
             return ResponseEntity.badRequest().build();

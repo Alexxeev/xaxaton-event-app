@@ -136,7 +136,9 @@ public class EventsController {
                 new InviteResponseDTO("/invites/" + invite.getId()));
     }
 
-    @GetMapping
+
+    /*
+    @GetMapping("/{eventId}/debts")
     public ResponseEntity<List<Debt>> getAllDebts(
             @PathVariable("memberId") int memberId,
             @PathVariable("eventId") int eventId) {
@@ -170,5 +172,5 @@ public class EventsController {
                         entry.getValue()))
                 .toList();
         return ResponseEntity.ok(debtList);
-    }
+    }*/
 }

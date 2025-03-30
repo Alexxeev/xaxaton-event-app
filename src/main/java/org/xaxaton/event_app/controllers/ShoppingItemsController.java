@@ -52,7 +52,10 @@ public class ShoppingItemsController {
         if (!memberAndEventAndTaskExists(memberId, eventId, taskId))
             return ResponseEntity.notFound().build();
         //if not in event or task return 403
-        var shoppingItems = shoppingItemRepo.findAll();
+        var shoppingItems = shoppingItemRepo.findByTaskId(taskId);
+
+
+
         //var shoppingItems = repo.findAllByTaskId(taskId);
         var dtos = shoppingItemMapper.toListOfDTOs(shoppingItems);
         return ResponseEntity.ok(dtos);
@@ -94,6 +97,14 @@ public class ShoppingItemsController {
             return ResponseEntity.notFound().build();
         //if not in event or task return 403
         var item = shoppingItemMapper.toModel(shoppingItemDTO);
+
+        Optional<Task> task = taskRepo.findById(taskId);
+        if (task.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        item.setTask(task.get());
+
         item = shoppingItemRepo.save(item);
         var newDto = shoppingItemMapper.toDTO(item);
         return ResponseEntity.ok(newDto);
