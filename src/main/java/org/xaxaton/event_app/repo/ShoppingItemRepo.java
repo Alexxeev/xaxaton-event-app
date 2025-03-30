@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.xaxaton.event_app.models.ShoppingItem;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -36,4 +37,8 @@ public interface ShoppingItemRepo extends JpaRepository<ShoppingItem, Integer> {
             @Param("taskId") int taskId,
             @Param("eventId") int eventId,
             @Param("memberId") int memberId);
+
+    List<ShoppingItem> findAllByMemberIdAnnEventId(
+            @Param("memberId") int memberId,
+            @Param("eventId") int eventId);
 }
