@@ -4,10 +4,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.xaxaton.event_app.dto.EventDTO;
+import org.xaxaton.event_app.dto.InviteRequestDTO;
+import org.xaxaton.event_app.dto.InviteResponseDTO;
 import org.xaxaton.event_app.mappers.EventMapper;
 import org.xaxaton.event_app.models.Event;
+import org.xaxaton.event_app.models.Invite;
 import org.xaxaton.event_app.models.Member;
 import org.xaxaton.event_app.repo.EventRepo;
+import org.xaxaton.event_app.repo.InviteRepo;
 import org.xaxaton.event_app.repo.MemberRepo;
 
 import java.util.List;
@@ -19,11 +23,13 @@ import java.util.Optional;
 public class EventsController {
     private final MemberRepo memberRepo;
     private final EventRepo eventRepo;
+    private final InviteRepo inviteRepo;
     private final EventMapper eventMapper;
 
-    public EventsController(MemberRepo memberRepo, EventRepo eventRepo, EventMapper eventMapper) {
+    public EventsController(MemberRepo memberRepo, EventRepo eventRepo, InviteRepo inviteRepo, EventMapper eventMapper) {
         this.memberRepo = memberRepo;
         this.eventRepo = eventRepo;
+        this.inviteRepo = inviteRepo;
         this.eventMapper = eventMapper;
     }
 
@@ -96,5 +102,24 @@ public class EventsController {
 
         EventDTO updatedDTO = eventMapper.toDTO(updatedEvent);
         return ResponseEntity.ok(updatedDTO);
+    }
+
+    @PostMapping("/{id}/invite")
+    public ResponseEntity<InviteResponseDTO> invite(
+            @PathVariable("memberId") int memberId,
+            @PathVariable("eventId") int eventId,
+            @PathVariable("id") int id,
+            @RequestBody InviteRequestDTO inviteRequestDTO) {
+        Invite invite = new Invite();
+
+        Member invitee = memberRepo.getReferenceById(inviteRequestDTO.inviteeId());
+        invite.setInvitee(invitee);
+        Member inviter = memberRepo.getReferenceById(memberId);
+        invite.setInviter(inviter);
+        Event event = eventRepo.getReferenceById(eventId);
+        invite.setEvent(event);
+        invite = inviteRepo.save(invite);
+        return ResponseEntity.ok(
+                new InviteResponseDTO("/invites/" + invite.getId()));
     }
 }
