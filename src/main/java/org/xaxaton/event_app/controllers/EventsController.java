@@ -163,6 +163,7 @@ public class EventsController {
         }
         var debtList = debts.entrySet()
                 .stream()
+                .filter(entry -> entry.getValue() > 0)
                 .map(entry -> new Debt(
                         memberMapper.toDTO(
                                 memberRepo.findById(entry.getKey()).get()),
