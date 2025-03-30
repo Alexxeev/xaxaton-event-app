@@ -43,5 +43,8 @@ public interface ShoppingItemRepo extends JpaRepository<ShoppingItem, Integer> {
             @Param("memberId") int memberId,
             @Param("eventId") int eventId);*/
 
+    @Query("SELECT si FROM ShoppingItem si JOIN si.task t WHERE t.event.id = :eventId")
+    List<ShoppingItem> findByEventId(@Param("eventId") int eventId);
+
     List<ShoppingItem> findByTaskId(int taskId);
 }

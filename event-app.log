@@ -7179,3 +7179,42 @@ Caused by: org.springframework.data.mapping.PropertyReferenceException: No prope
 2025-03-30T12:25:43.483+03:00  INFO 12792 --- [xaxaton-event-app] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2025-03-30T12:25:43.483+03:00  INFO 12792 --- [xaxaton-event-app] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2025-03-30T12:25:43.488+03:00  INFO 12792 --- [xaxaton-event-app] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-03-30T12:31:12.187+03:00  INFO 11560 --- [xaxaton-event-app] [main] o.xaxaton.event_app.EventAppApplication  : Starting EventAppApplication using Java 21.0.1 with PID 11560 (C:\Users\r0mberg\Documents\Dev\Java\xaxaton-event\xaxaton-event-app\target\classes started by r0mberg in C:\Users\r0mberg\Documents\Dev\Java\xaxaton-event\xaxaton-event-app)
+2025-03-30T12:31:12.199+03:00  INFO 11560 --- [xaxaton-event-app] [main] o.xaxaton.event_app.EventAppApplication  : The following 1 profile is active: "dev"
+2025-03-30T12:31:12.792+03:00  INFO 11560 --- [xaxaton-event-app] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-03-30T12:31:12.853+03:00  INFO 11560 --- [xaxaton-event-app] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 55 ms. Found 5 JPA repository interfaces.
+2025-03-30T12:31:13.318+03:00  INFO 11560 --- [xaxaton-event-app] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 14000 (http)
+2025-03-30T12:31:13.322+03:00  INFO 11560 --- [xaxaton-event-app] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-03-30T12:31:13.322+03:00  INFO 11560 --- [xaxaton-event-app] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-03-30T12:31:13.363+03:00  INFO 11560 --- [xaxaton-event-app] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-03-30T12:31:13.363+03:00  INFO 11560 --- [xaxaton-event-app] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1140 ms
+2025-03-30T12:31:13.484+03:00  INFO 11560 --- [xaxaton-event-app] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-03-30T12:31:13.535+03:00  INFO 11560 --- [xaxaton-event-app] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-03-30T12:31:13.573+03:00  INFO 11560 --- [xaxaton-event-app] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-03-30T12:31:13.785+03:00  INFO 11560 --- [xaxaton-event-app] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-03-30T12:31:13.815+03:00  INFO 11560 --- [xaxaton-event-app] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-03-30T12:31:13.952+03:00  INFO 11560 --- [xaxaton-event-app] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@18989e0
+2025-03-30T12:31:13.953+03:00  INFO 11560 --- [xaxaton-event-app] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-03-30T12:31:13.974+03:00  WARN 11560 --- [xaxaton-event-app] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-03-30T12:31:13.994+03:00  INFO 11560 --- [xaxaton-event-app] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 16.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-03-30T12:31:14.695+03:00  INFO 11560 --- [xaxaton-event-app] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-03-30T12:31:15.056+03:00  INFO 11560 --- [xaxaton-event-app] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-03-30T12:31:15.299+03:00  INFO 11560 --- [xaxaton-event-app] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-03-30T12:31:15.935+03:00  WARN 11560 --- [xaxaton-event-app] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-03-30T12:31:16.291+03:00  INFO 11560 --- [xaxaton-event-app] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 14000 (http) with context path '/'
+2025-03-30T12:31:16.297+03:00  INFO 11560 --- [xaxaton-event-app] [main] o.xaxaton.event_app.EventAppApplication  : Started EventAppApplication in 4.479 seconds (process running for 4.736)
+2025-03-30T12:31:25.531+03:00  INFO 11560 --- [xaxaton-event-app] [http-nio-14000-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-03-30T12:31:25.531+03:00  INFO 11560 --- [xaxaton-event-app] [http-nio-14000-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-03-30T12:31:25.531+03:00  INFO 11560 --- [xaxaton-event-app] [http-nio-14000-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2025-03-30T12:39:04.226+03:00  INFO 11560 --- [xaxaton-event-app] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-03-30T12:39:04.240+03:00  INFO 11560 --- [xaxaton-event-app] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-03-30T12:39:04.240+03:00  INFO 11560 --- [xaxaton-event-app] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-03-30T12:39:04.240+03:00  INFO 11560 --- [xaxaton-event-app] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-03-30T12:39:04.253+03:00  INFO 11560 --- [xaxaton-event-app] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

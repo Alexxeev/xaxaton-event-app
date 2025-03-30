@@ -137,13 +137,14 @@ public class EventsController {
     }
 
 
-    /*
+
     @GetMapping("/{eventId}/debts")
     public ResponseEntity<List<Debt>> getAllDebts(
             @PathVariable("memberId") int memberId,
             @PathVariable("eventId") int eventId) {
         Event event = eventRepo.findById(eventId).get();
-        List<ShoppingItem> items = shoppingItemRepo.findAllByMemberIdAnnEventId(memberId, eventId);
+        List<ShoppingItem> items = shoppingItemRepo.findByEventId(eventId);
+
         Map<Integer, Long> debts = new HashMap<>();
         for (ShoppingItem item : items) {
             List<Member> wishers = item.getMembersWishingThis();
@@ -172,5 +173,5 @@ public class EventsController {
                         entry.getValue()))
                 .toList();
         return ResponseEntity.ok(debtList);
-    }*/
+    }
 }
